@@ -10,16 +10,18 @@
         android:id="@+id/username1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:hint="@string/user_name"
-        android:layout_marginTop="50dp"/>
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/password1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/password"
+        android:layout_below="@+id/username1"
         android:layout_marginTop="50dp"
-        android:layout_below="@+id/username1"/>
+        android:hint="@string/password"
+        android:minHeight="48dp" />
 
     <Button
         android:id="@+id/btnsignin1"
