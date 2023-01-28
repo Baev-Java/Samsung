@@ -1,62 +1,81 @@
 package com.example.sqlexam;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.CacheControl;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
-
+    EditText editTextTextPassword, login;
     Button btnsignin1;
 
+    TextView status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnsignin1 = (Button) findViewById(R.id.btnsignin1);
+        editTextTextPassword = (EditText) findViewById(R.id.editTextTextPassword);
+        login = (EditText) findViewById(R.id.login);
         btnsignin1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                URL url = null;
-                try {
-                    url = new URL("https://db67-79-139-155-117.eu.ngrok.io/login");
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
+            public void onClick(View v) {
+                sendPOST(v);
+            }
+        });
+    }
+
+    public void sendPOST(View view) {
+        // создаем singleton объект клиента
+        String Url = "https://da4e-198-199-101-87.ngrok.io"; // dexgo.ru
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(Url).newBuilder();
+        urlBuilder.addQueryParameter("token", "dexgo-DDeBNZndzV=I56ofAde1ZLCYVzh-hPakcpEM?1hM/WNsrWNHjXsts7AC8uSSYfLXho1sRsZjOBst4UjMUtjCtKPSq!Deibsx/Aws09pZ7LyZuU-s3FVMB1Bz4EknzBPzR-!HtV6F4ddTqtkDJ2rG!lI5cysP!stPcHWgtN3-t17EscMGuVaXYx?tPCLvADiO3mOVWuUucR-F!qcN5UiqWWtbnO8nvZEBWXDBnU7AA7Pjbs8dAZrBsORSUf");
+        urlBuilder.addQueryParameter("login", login.getText().toString());
+        urlBuilder.addQueryParameter("password", editTextTextPassword.getText().toString());
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .cacheControl(new CacheControl.Builder().maxStale(30, TimeUnit.DAYS).build())
+                .build();
+        // выполняем запрос
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    // читаем данные в отдельном потоке
+                    final String responseData = response.body().string();
+
+                    // выполняем операции по обновлению UI
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            status.setText("OK");
+                        }
+                    });
                 }
-                HttpURLConnection connection = null;
-                try {
-                    connection = (HttpURLConnection) url.openConnection();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            }
 
-                try {
-                    assert connection != null;
-                    BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-                    // read the input stream
-                    // in this case, I simply read the first line of the stream
-                    String line = br.readLine();
-                    Log.d("HTTP-GET", line);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    connection.disconnect();
-                }
-
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
             }
         });
     }
