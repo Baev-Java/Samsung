@@ -6,17 +6,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.squareup.mimecraft.FormEncoding;
+
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,11 +34,13 @@ public class MainActivity extends AppCompatActivity {
     TextView status;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         editTextTextPassword = (EditText) findViewById(R.id.editTextTextPassword);
         login = (EditText) findViewById(R.id.login);
+        btnsignin1 = (Button) findViewById(R.id.btnsignin1);
+        status = (TextView) findViewById(R.id.status);
         btnsignin1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         // выполняем запрос
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onResponse(Call call, final Response response) throws IOException {
+            public void onResponse(Call call, @NonNull final Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     throw new IOException("Unexpected code " + response);
                 } else {
@@ -72,9 +82,10 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }
             }
-//
+
+            //
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@NonNull Call call, IOException e) {
                 e.printStackTrace();
             }
         });
