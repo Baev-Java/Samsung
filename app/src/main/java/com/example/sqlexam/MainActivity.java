@@ -82,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }
             }
-
-            //
             @Override
             public void onFailure(@NonNull Call call, IOException e) {
                 e.printStackTrace();
