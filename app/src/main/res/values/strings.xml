@@ -1,7 +1,15 @@
 <resources>
-    <string name="app_name">SQLEXAM</string>
-    <string name="user_name">User Email</string>
-    <string name="password">Password</string>
-    <string name="sign_in">Sign in</string>
+    <string name="app_name">Statistics.Online</string>
+    <string name="user_name">Логин:</string>
+    <string name="password">Пароль:</string>
+    <string name="sign_in">Вход</string>
     <string name="textview">TextView</string>
+    <string name="enter_email_or_phone">Enter Email or Phone</string>
+    <string name="registration">Registration</string>
+    <string name="Phone">Введите ваш номер:</string>
+    <string name="registred">Регистрация</string>
+    <string name="login">Придумайте логин</string>
+    <string name="passwordNew">Пароль:</string>
+    <string name="RePassword">Повторите Пароль:</string>
+    <string name="registrationButon">Регистрация</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.sqlexam;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +30,8 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     EditText editTextTextPassword, login;
-    Button btnsignin1;
+    Button btnsignin1, btnRegistration;
+
 
     TextView status;
 
@@ -41,10 +43,18 @@ public class MainActivity extends AppCompatActivity {
         login = (EditText) findViewById(R.id.login);
         btnsignin1 = (Button) findViewById(R.id.btnsignin1);
         status = (TextView) findViewById(R.id.status);
+        btnRegistration = (Button) findViewById(R.id.btnRegistration);
         btnsignin1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendPOST(v);
+            }
+        });
+        btnRegistration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegistredActivity.class);
+                startActivity(intent);
             }
         });
     }
